@@ -1,0 +1,29 @@
+name: PHP Server
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  serve:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Set up PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: '7.4'
+
+    - name: Start PHP Server
+      run: |
+        sudo apt-get install -y unzip
+        sudo php -S 0.0.0.0:80 -t . &
+        sudo apt-get install -y ngrok
+        ngrok http 80
+
+    - name: Keep server alive
+      run: sleep 1d
